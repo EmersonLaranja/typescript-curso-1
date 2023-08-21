@@ -4,7 +4,6 @@
     "esModuleInterop": true, // para resolver o problema de importação
     "module": "commonjs",
     "strict": true,
-    "noEmitOnError": true
   },
   "include": [ //Leia em qualquer arquivo dentro da pasta src e o arquivo server.ts
     "./src/**/*",
