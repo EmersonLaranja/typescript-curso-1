@@ -3,7 +3,7 @@ import EnumEspecie from "./EnumEspecie";
 type TipoPet = {
   id: number;
   nome: string;
-  idade: number;
+  dataDeNascimento: Date;
   especie: EnumEspecie;
   adotado: boolean;
 };
