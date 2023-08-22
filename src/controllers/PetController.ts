@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import type TipoPet from "../types/TipoPet";
+import EnumEspecie from "../types/EnumEspecie";
 
 const listaDePets: TipoPet[] = [];
-//
+
 export default class PetController {
   criaPet(req: Request, res: Response) {
     const { id, adotado, especie, nome, idade } = <TipoPet>req.body;
@@ -11,6 +12,10 @@ export default class PetController {
       return res
         .status(400)
         .json({ erro: "Todos os campos são obrigatórios." });
+    }
+
+    if (!(especie.toLowerCase() in EnumEspecie)) {
+      return res.status(400).json({ erro: "Espécie inválida." });
     }
 
     const novoPet: TipoPet = { id: Number(id), idade, adotado, especie, nome };
