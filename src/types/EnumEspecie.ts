@@ -1,6 +1,6 @@
 enum EnumEspecie {
-  cachorro,
-  gato,
+  CACHORRO = "cachorro",
+  GATO = "gato",
 }
 
 export default EnumEspecie;

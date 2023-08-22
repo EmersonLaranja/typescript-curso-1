@@ -14,7 +14,7 @@ export default class PetController {
         .json({ erro: "Todos os campos são obrigatórios." });
     }
 
-    if (!(especie.toLowerCase() in EnumEspecie)) {
+    if (!Object.values(EnumEspecie).includes(especie)) {
       return res.status(400).json({ erro: "Espécie inválida." });
     }
 
