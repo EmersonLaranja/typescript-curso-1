@@ -1,5 +1,7 @@
 import express from "express";
 import router from "./routes";
+import "reflect-metadata";
+import { AppDataSource } from "./config/dataSource";
 
 const app = express();
 app.use(express.json());
@@ -12,5 +14,11 @@ app.get("/", (req, res) => {
 });
 
 router(app);
+
+AppDataSource.initialize()
+  .then(() => {
+    console.log("DataSouce inicializado com sucesso!");
+  })
+  .catch((error: Error) => console.log(error));
 
 export default app;
