@@ -1,20 +1,12 @@
 import { Request, Response } from "express";
-import type TipoPet from "../types/TipoPet";
-import EnumEspecie from "../types/EnumEspecie";
+import PetEntity from "../entities/PetEntity";
 import PetRepository from "../repositories/PetRepository";
-
-const listaDePets: TipoPet[] = [];
-let ultimoId = 0;
-
-function geraId(): number {
-  return ++ultimoId;
-}
-
+import EnumEspecie from "../types/EnumEspecie";
 export default class PetController {
   constructor(private repository: PetRepository) {}
 
-  criaPet(req: Request, res: Response) {
-    const { adotado, especie, nome, dataDeNascimento } = <TipoPet>req.body;
+  async criaPet(req: Request, res: Response) {
+    const { adotado, especie, nome, dataDeNascimento } = <PetEntity>req.body;
 
     if (!adotado || !especie || !nome || !dataDeNascimento) {
       return res
@@ -26,31 +18,23 @@ export default class PetController {
       return res.status(400).json({ erro: "Espécie inválida." });
     }
 
-    const novoPet: TipoPet = {
-      id: Number(geraId()),
-      dataDeNascimento,
-      adotado,
-      especie,
-      nome,
-    };
-
+    const novoPet = new PetEntity(nome, dataDeNascimento, especie, adotado);
     // listaDePets.push(novoPet);
-    this.repository.criaPet(novoPet);
+    await this.repository.criaPet(novoPet);
     return res.status(204).json(novoPet);
   }
 
-  atualizaPet(req: Request, res: Response) {
+  async atualizaPet(req: Request, res: Response) {
     const { id } = req.params;
-    const { nome, dataDeNascimento, especie, adotado } = req.body as TipoPet;
-    const pet = listaDePets.find((pet) => pet.id === Number(id));
-    if (!pet) {
-      return res.status(404).json({ erro: "Pet não encontrado." });
+    const { success, message } = await this.repository.atualizaPet(
+      Number(id),
+      req.body as PetEntity
+    );
+
+    if (!success) {
+      return res.status(404).json({ message });
     }
-    pet.nome = nome;
-    pet.dataDeNascimento = dataDeNascimento;
-    pet.especie = especie;
-    pet.adotado = adotado;
-    return res.status(200).json(pet);
+    return res.sendStatus(204);
   }
 
   async listaPets(req: Request, res: Response) {
@@ -58,23 +42,14 @@ export default class PetController {
     return res.json(listaDePets);
   }
 
-  buscaPetPorId(req: Request, res: Response) {
+  async deletaPet(req: Request, res: Response) {
     const { id } = req.params;
-    const pet = listaDePets.find((pet) => pet.id === Number(id));
-    if (!pet) {
-      return res.status(404).json({ erro: "Pet não encontrado." });
-    }
-    return res.status(200).json(pet);
-  }
 
-  deletaPet(req: Request, res: Response) {
-    const { id } = req.params;
-    const pet = listaDePets.find((pet) => pet.id === Number(id));
-    if (!pet) {
-      return res.status(404).json({ erro: "Pet não encontrado." });
+    const { success, message } = await this.repository.deletaPet(Number(id));
+
+    if (!success) {
+      return res.status(404).json({ message });
     }
-    const indice = listaDePets.indexOf(pet);
-    listaDePets.splice(indice, 1);
-    return res.status(204).json();
+    return res.sendStatus(204);
   }
 }
