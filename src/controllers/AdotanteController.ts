@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import AdotanteEntity from "../entities/AdotanteEntity";
 import AdotanteRepository from "../repositories/AdotanteRepository";
+import EnderecoEntity from "../entities/EnderecoEntity";
 export default class AdotanteController {
   constructor(private repository: AdotanteRepository) {}
 
   async criaAdotante(req: Request, res: Response) {
-    const { celular, endereco, foto, nome, senha } = <AdotanteEntity>req.body;
+    const { celular, foto, nome, senha } = <AdotanteEntity>req.body;
 
     if (!celular || !nome || !senha) {
       return res
@@ -13,13 +14,7 @@ export default class AdotanteController {
         .json({ erro: "Nome, celular e senha são obrigatórios." });
     }
 
-    const novoAdotante = new AdotanteEntity(
-      nome,
-      senha,
-      celular,
-      foto,
-      endereco
-    );
+    const novoAdotante = new AdotanteEntity(nome, senha, celular, foto);
 
     await this.repository.criaAdotante(novoAdotante);
     return res.status(204).json(novoAdotante);
@@ -35,6 +30,7 @@ export default class AdotanteController {
     if (!success) {
       return res.status(404).json({ message });
     }
+
     return res.sendStatus(204);
   }
 
@@ -48,6 +44,20 @@ export default class AdotanteController {
 
     const { success, message } = await this.repository.deletaAdotante(
       Number(id)
+    );
+
+    if (!success) {
+      return res.status(404).json({ message });
+    }
+    return res.sendStatus(204);
+  }
+
+  async atualizaEnderecoAdotante(req: Request, res: Response) {
+    const { id } = req.params;
+
+    const { success, message } = await this.repository.atualizaEnderecoAdotante(
+      Number(id),
+      req.body as EnderecoEntity
     );
 
     if (!success) {
