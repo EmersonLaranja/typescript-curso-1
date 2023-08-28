@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export default class Endereco {
+export default class EnderecoEntity {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
