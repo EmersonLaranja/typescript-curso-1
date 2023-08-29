@@ -8,7 +8,12 @@ export default class PetController {
   async criaPet(req: Request, res: Response) {
     const { adotado, especie, nome, dataDeNascimento } = <PetEntity>req.body;
 
-    if (!adotado || !especie || !nome || !dataDeNascimento) {
+    if (
+      adotado == undefined ||
+      especie == undefined ||
+      nome == undefined ||
+      dataDeNascimento == undefined
+    ) {
       return res
         .status(400)
         .json({ erro: "Todos os campos são obrigatórios." });
@@ -47,6 +52,18 @@ export default class PetController {
 
     const { success, message } = await this.repository.deletaPet(Number(id));
 
+    if (!success) {
+      return res.status(404).json({ message });
+    }
+    return res.sendStatus(204);
+  }
+
+  async adotaPet(req: Request, res: Response) {
+    const { pet_id, id_adotante } = req.params;
+    const { success, message } = await this.repository.adotaPet(
+      Number(pet_id),
+      Number(id_adotante)
+    );
     if (!success) {
       return res.status(404).json({ message });
     }

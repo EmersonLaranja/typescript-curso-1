@@ -1,7 +1,6 @@
 import { Repository } from "typeorm";
 import AdotanteEntity from "../entities/AdotanteEntity";
 import InterfaceAdotanteRepository from "./interfaces/InterfaceAdotanteRepository";
-import EnderecoEntity from "../entities/EnderecoEntity";
 
 export default class AdotanteRepository implements InterfaceAdotanteRepository {
   constructor(private repository: Repository<AdotanteEntity>) {}
@@ -11,7 +10,7 @@ export default class AdotanteRepository implements InterfaceAdotanteRepository {
   }
 
   async listaAdotantes(): Promise<AdotanteEntity[]> {
-    return await this.repository.find({ relations: ["endereco"] });
+    return await this.repository.find();
   }
   async atualizaAdotante(
     id: number,
@@ -56,32 +55,6 @@ export default class AdotanteRepository implements InterfaceAdotanteRepository {
       return {
         success: false,
         message: "Ocorreu um erro ao tentar excluir o adotante.",
-      };
-    }
-  }
-
-  async atualizaEnderecoAdotante(idAdotante: number, endereco: EnderecoEntity) {
-    try {
-      const adotante = await this.repository.findOne({
-        where: { id: idAdotante },
-      });
-
-      if (!adotante) {
-        return { success: false, message: "Adotante não encontrado" };
-      }
-
-      // adotante.endereco = endereco; //! APARENTEMENTE SÓ ESTÁ SALVANDO MOMENTANEAMENTE, N ENTENDI PQ
-
-      adotante.endereco = endereco;
-      await this.repository.save(adotante);
-
-      return { success: true };
-    } catch (error) {
-      console.log(error);
-      // Se ocorrer um erro inesperado, você pode retornar uma mensagem genérica ou personalizada.
-      return {
-        success: false,
-        message: "Ocorreu um erro ao tentar atualizar o endereco do adotante.",
       };
     }
   }
