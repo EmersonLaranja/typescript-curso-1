@@ -24,7 +24,11 @@ export default class AdotanteEntity {
   @Column({ nullable: true })
   foto?: string; // Usar o operador ? para campo opcional
 
-  @OneToOne(() => EnderecoEntity, { nullable: true, cascade: true }) // Relacionamento 1:1 com EnderecoEntity
+  @OneToOne(() => EnderecoEntity, {
+    nullable: true,
+    eager: true,
+    cascade: true,
+  }) // Relacionamento 1:1 com EnderecoEntity
   @JoinColumn() // Coluna de chave estrangeira
   endereco?: EnderecoEntity;
 

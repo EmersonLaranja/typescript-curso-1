@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import express from "express";
 import AdotanteController from "../controllers/AdotanteController";
 import AdotanteRepository from "../repositories/AdotanteRepository";

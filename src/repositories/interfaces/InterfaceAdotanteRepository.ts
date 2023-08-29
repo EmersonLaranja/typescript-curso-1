@@ -16,7 +16,7 @@ export default interface InterfaceAdotanteRepository {
     id: number
   ): Promise<{ success: boolean; message?: string }> | void;
 
-  atualizaEnderecoAdotante?(
+  atualizaEnderecoAdotante(
     idAdotante: number,
     endereco: EnderecoEntity
   ): Promise<{ success: boolean; message?: string }> | void; //metodo opcional
