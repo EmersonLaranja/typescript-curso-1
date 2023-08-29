@@ -8,7 +8,7 @@ export default class AdotanteController {
   async criaAdotante(req: Request, res: Response) {
     const { celular, foto, nome, senha } = <AdotanteEntity>req.body;
 
-    if (!celular || !nome || !senha) {
+    if (celular == undefined || nome == undefined || senha == undefined) {
       return res
         .status(400)
         .json({ erro: "Nome, celular e senha são obrigatórios." });
