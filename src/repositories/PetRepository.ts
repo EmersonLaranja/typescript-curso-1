@@ -91,4 +91,44 @@ export default class PetRepository implements InterfacePetRepository {
       };
     }
   }
+
+  calcularIdadePet(dataNascimento: Date): string {
+    const dataAtual = new Date();
+    const diferencaAnos =
+      dataAtual.getFullYear() - dataNascimento.getFullYear();
+    const mesAtual = dataAtual.getMonth();
+    const mesNascimento = dataNascimento.getMonth();
+
+    if (
+      mesNascimento > mesAtual ||
+      (mesNascimento === mesAtual &&
+        dataNascimento.getDate() > dataAtual.getDate())
+    ) {
+      return `${diferencaAnos - 1} anos`;
+    }
+
+    return `${diferencaAnos} anos`;
+  }
 }
+
+//! Trouxe aqui pra fora apenas para testar com o aluno
+function calcularIdadePet(dataNascimento: Date): string {
+  const dataAtual = new Date();
+  const diferencaAnos = dataAtual.getFullYear() - dataNascimento.getFullYear();
+  const mesAtual = dataAtual.getMonth();
+  const mesNascimento = dataNascimento.getMonth();
+
+  if (
+    mesNascimento > mesAtual ||
+    (mesNascimento === mesAtual &&
+      dataNascimento.getDate() > dataAtual.getDate())
+  ) {
+    return `${diferencaAnos - 1} anos`;
+  }
+
+  return `${diferencaAnos} anos`;
+}
+
+const resultado = calcularIdadePet(new Date("2019-05-01"));
+
+console.log(resultado);
