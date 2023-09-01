@@ -28,5 +28,8 @@ router.get("/filtro/:porte", (req, res) =>
 router.get("/filtro/:idadeInicial-:idadeFinal", (req, res) =>
   petController.buscaPetPorFaixaDeIdade(req, res)
 );
+router.get("/filtro/:campo/:valor", (req, res) =>
+  petController.buscarPetPorCampo(req, res)
+);
 
 export default router;

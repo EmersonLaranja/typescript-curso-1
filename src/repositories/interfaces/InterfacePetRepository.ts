@@ -28,4 +28,9 @@ export default interface InterfacePetRepository {
     minIdade: number,
     maxIdade: number
   ): Promise<PetEntity[]>;
+
+  buscarPetPorCampo<T extends keyof PetEntity>(
+    campo: T,
+    valor: PetEntity[T]
+  ): Promise<PetEntity | void | null>;
 }

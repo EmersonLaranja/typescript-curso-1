@@ -117,4 +117,21 @@ export default class PetRepository implements InterfacePetRepository {
       },
     });
   }
+
+  async buscarPetPorCampo<T extends keyof PetEntity>(
+    campo: T,
+    valor: PetEntity[T]
+  ): Promise<PetEntity | void | null> {
+    try {
+      const petEncontrado = await this.petRepository.findOne({
+        where: { [campo]: valor },
+      });
+
+      return petEncontrado;
+    } catch (error) {
+      // Lidar com o erro, se necessário
+      console.log(error);
+      return undefined;
+    }
+  }
 }
