@@ -2,6 +2,8 @@ import PetEntity from "../entities/PetEntity";
 import { Repository } from "typeorm";
 import InterfacePetRepository from "./interfaces/InterfacePetRepository";
 import AdotanteEntity from "../entities/AdotanteEntity";
+import { Between } from "typeorm";
+import EnumPorte from "../types/EnumPorte";
 
 export default class PetRepository implements InterfacePetRepository {
   constructor(
@@ -92,43 +94,27 @@ export default class PetRepository implements InterfacePetRepository {
     }
   }
 
-  calcularIdadePet(dataNascimento: Date): string {
+  async buscaPetPeloPorte(porte: EnumPorte) {
+    return await this.petRepository.find({ where: { porte } });
+  }
+
+  async buscaPetPorFaixaDeIdade(
+    minIdade: number,
+    maxIdade: number
+  ): Promise<PetEntity[]> {
     const dataAtual = new Date();
-    const diferencaAnos =
-      dataAtual.getFullYear() - dataNascimento.getFullYear();
-    const mesAtual = dataAtual.getMonth();
-    const mesNascimento = dataNascimento.getMonth();
+    const minData = new Date(dataAtual);
+    const maxData = new Date(dataAtual);
 
-    if (
-      mesNascimento > mesAtual ||
-      (mesNascimento === mesAtual &&
-        dataNascimento.getDate() > dataAtual.getDate())
-    ) {
-      return `${diferencaAnos - 1} anos`;
-    }
+    minData.setFullYear(minData.getFullYear() - maxIdade);
+    console.log(minIdade, maxIdade);
 
-    return `${diferencaAnos} anos`;
+    maxData.setFullYear(maxData.getFullYear() - minIdade);
+    console.log(minData.getFullYear(), maxData.getFullYear());
+    return await this.petRepository.find({
+      where: {
+        dataDeNascimento: Between(minData, maxData),
+      },
+    });
   }
 }
-
-//! Trouxe aqui pra fora apenas para testar com o aluno
-function calcularIdadePet(dataNascimento: Date): string {
-  const dataAtual = new Date();
-  const diferencaAnos = dataAtual.getFullYear() - dataNascimento.getFullYear();
-  const mesAtual = dataAtual.getMonth();
-  const mesNascimento = dataNascimento.getMonth();
-
-  if (
-    mesNascimento > mesAtual ||
-    (mesNascimento === mesAtual &&
-      dataNascimento.getDate() > dataAtual.getDate())
-  ) {
-    return `${diferencaAnos - 1} anos`;
-  }
-
-  return `${diferencaAnos} anos`;
-}
-
-const resultado = calcularIdadePet(new Date("2019-05-01"));
-
-console.log(resultado);

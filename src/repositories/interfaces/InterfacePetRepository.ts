@@ -17,4 +17,15 @@ export default interface InterfacePetRepository {
     idPet: number,
     idAdotante: number
   ): Promise<{ success: boolean; message?: string }> | void;
+
+  buscaPetPorFaixaDeIdade(
+    idadeInicial: number,
+    idadeFinal: number
+  ): PetEntity[] | Promise<PetEntity[]>;
+
+  buscaPetPeloPorte(porte: string): PetEntity[] | Promise<PetEntity[]>;
+  buscaPetPorFaixaDeIdade(
+    minIdade: number,
+    maxIdade: number
+  ): Promise<PetEntity[]>;
 }

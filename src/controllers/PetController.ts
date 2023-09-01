@@ -83,4 +83,22 @@ export default class PetController {
     }
     return res.sendStatus(204);
   }
+
+  async buscaPetPeloPorte(req: Request, res: Response) {
+    const { porte } = req.params;
+    const listaDePets: PetEntity[] = await this.repository.buscaPetPeloPorte(
+      porte as EnumPorte
+    );
+    return res.json(listaDePets);
+  }
+
+  async buscaPetPorFaixaDeIdade(req: Request, res: Response) {
+    const { idadeInicial, idadeFinal } = req.params;
+    const listaDePets: PetEntity[] =
+      await this.repository.buscaPetPorFaixaDeIdade(
+        Number(idadeInicial),
+        Number(idadeFinal)
+      );
+    return res.json(listaDePets);
+  }
 }
