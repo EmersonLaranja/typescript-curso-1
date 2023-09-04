@@ -22,16 +22,15 @@ router.put("/:pet_id/:id_adotante", (req, res) =>
   petController.adotaPet(req, res)
 );
 
-//! mudar para req.query
-router.get("/filtro/:porte", (req, res) =>
+router.get("/filtroPorte", (req, res) =>
   petController.buscaPetPeloPorte(req, res)
 );
 
-router.get("/filtro/:idadeInicial-:idadeFinal", (req, res) =>
+router.get("/filtroIdade", (req, res) =>
   petController.buscaPetPorFaixaDeIdade(req, res)
 );
 
-router.get("/filtro/:campo/:valor", (req, res) =>
+router.get("/filtro", (req, res) =>
   petController.buscarPetPorCampoGenerico(req, res)
 );
 

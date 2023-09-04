@@ -75,6 +75,8 @@ export default class PetRepository implements InterfacePetRepository {
     return await this.petRepository.find({ where: { porte } });
   }
 
+  // calculaIdadeMinimaEMaxima(){}
+
   async buscaPetPorFaixaDeIdade(
     minIdade: number,
     maxIdade: number
@@ -92,12 +94,12 @@ export default class PetRepository implements InterfacePetRepository {
       },
     });
   }
-  // campo: idadeInicial (Date), valor: idadeFinal (Date)
-  async buscarPetPorCampoGenerico<T extends keyof PetEntity>(
-    campo: T,
-    valor: PetEntity[T] | Date
-  ): Promise<PetEntity | void | null> {
-    const petEncontrado = await this.petRepository.findOne({
+
+  async buscarPetPorCampoGenerico<Tipo extends keyof PetEntity>(
+    campo: Tipo,
+    valor: PetEntity[Tipo] | Date
+  ): Promise<PetEntity[]> {
+    const petEncontrado = await this.petRepository.find({
       where: { [campo]: valor },
     });
 

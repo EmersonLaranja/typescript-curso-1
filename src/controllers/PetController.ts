@@ -85,7 +85,7 @@ export default class PetController {
   }
 
   async buscaPetPeloPorte(req: Request, res: Response) {
-    const { porte } = req.params;
+    const { porte } = req.query;
     const listaDePets: PetEntity[] = await this.repository.buscaPetPeloPorte(
       porte as EnumPorte
     );
@@ -93,7 +93,7 @@ export default class PetController {
   }
 
   async buscaPetPorFaixaDeIdade(req: Request, res: Response) {
-    const { idadeInicial, idadeFinal } = req.params;
+    const { idadeInicial, idadeFinal } = req.query;
     const listaDePets: PetEntity[] =
       await this.repository.buscaPetPorFaixaDeIdade(
         Number(idadeInicial),
@@ -103,11 +103,10 @@ export default class PetController {
   }
 
   async buscarPetPorCampoGenerico(req: Request, res: Response) {
-    const { campo, valor } = req.params;
-
+    const { campo, valor } = req.query;
     const petEncontrado = await this.repository.buscarPetPorCampoGenerico(
       campo as keyof PetEntity,
-      valor
+      valor as string
     );
 
     if (petEncontrado) {
