@@ -102,23 +102,18 @@ export default class PetController {
     return res.json(listaDePets);
   }
 
-  async buscarPetPorCampo(req: Request, res: Response) {
+  async buscarPetPorCampoGenerico(req: Request, res: Response) {
     const { campo, valor } = req.params;
 
-    try {
-      const petEncontrado = await this.repository.buscarPetPorCampo(
-        campo as keyof PetEntity,
-        valor
-      );
+    const petEncontrado = await this.repository.buscarPetPorCampoGenerico(
+      campo as keyof PetEntity,
+      valor
+    );
 
-      if (petEncontrado) {
-        return res.status(200).json(petEncontrado);
-      } else {
-        return res.status(404).json({ mensagem: "Pet não encontrado" });
-      }
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ mensagem: "Erro interno do servidor" });
+    if (petEncontrado) {
+      return res.status(200).json(petEncontrado);
+    } else {
+      return res.status(404).json({ mensagem: "Pet não encontrado" });
     }
   }
 }
